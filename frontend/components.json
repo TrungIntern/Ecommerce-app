@@ -1,0 +1,18 @@
+{
+	"$schema": "https://tw3.shadcn-svelte.com/schema.json",
+	"style": "default",
+	"tailwind": {
+		"css": "src/app.css",
+		"baseColor": "slate",
+		"config": "tailwind.config.js"
+	},
+	"aliases": {
+		"components": "$lib/components",
+		"utils": "$lib/utils",
+		"ui": "$lib/components/ui",
+		"hooks": "$lib/hooks",
+		"lib": "$lib"
+	},
+	"typescript": false,
+	"registry": "https://tw3.shadcn-svelte.com/registry/default"
+}
