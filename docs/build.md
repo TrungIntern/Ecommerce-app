@@ -141,5 +141,117 @@ GIAI ĐOẠN VIẾT MIDDLEWARE CHO NHÓM ADMIN ROUTES
 •	instance.addHook("preHandler", ...) gắn middleware chạy trước khi handler được gọi.
 •	Vì hook này gắn ở cấp nhóm (instance), nên tất cả route con đều hưởng chung middleware.
 
+GIAI ĐOẠN TẠO LUỒNG HIỂN THỊ TỪ BACKEND RA FRONTEND TRONG 1 FILE +page.svelte
+Tạo form đăng kí, đăng nhập trong file page.svelte
+Hiển thị danh sách sản phẩm : ….
+Từ giai đoạn này bắt đầu phức tạp vì không thể để 2 phần này chung 1 trang được, chuyển sang tách routes cho các chức năng 
+•	Tạo các thư mục login, signup lần lượt chứa các file +page.svelte 
+•	Tạo file .env ở root của frontend để dễ đổi backend URL
+# .env
+VITE_API_URL=http://localhost:4000
 
+
+Tại giao diện /products
+ 
+Những lưu ý : 
+•	Tạo nút Xem giỏ hàng để người dùng có thể check bất cứ lúc nào kể cả khi giỏ hàng trống
+•	Số nhỏ hiển thị tại nút Xem giỏ hàng biểu thị số loại sản phẩm, còn chi tiết số lượng thì xem trong trang /cart sau
+•	Phải thêm được sản phẩm nhiều lần mà không điều hướng đến trang /cart để không cần phải back lại
+
+Tại giao diện  /cart
+ 
+Sau khi nhấn nút đặt hàng phải điều hướng đến trang /cart, thông báo đã đặt hàng thành công và backend phải tự xoá giỏ hàng , đồng thời trang web chuyển hướng về lại /products
+Tại giao diện /orders
+Những lưu ý :
+•	Mã đơn rõ ràng
+•	Ngày và giờ đặt tách bạch
+•	Số lượng và tiền tách bạch
+Sau đó tạo nút Xem đơn hàng bên cạnh nút Xem giỏ hàng tại /products
+
+Cây thư mục folder frontend được update lại
+
+┣ 📂.svelte-kit
+┃ ┣ 📂generated
+┃ ┃ ┣ 📂client
+┃ ┃ ┃ ┣ 📂nodes
+┃ ┃ ┃ ┃ ┣ 📜0.js
+┃ ┃ ┃ ┃ ┣ 📜1.js
+┃ ┃ ┃ ┃ ┣ 📜2.js
+┃ ┃ ┃ ┃ ┣ 📜3.js
+┃ ┃ ┃ ┃ ┣ 📜4.js
+┃ ┃ ┃ ┃ ┣ 📜5.js
+┃ ┃ ┃ ┃ ┣ 📜6.js
+┃ ┃ ┃ ┃ ┗ 📜7.js
+┃ ┃ ┃ ┣ 📜app.js
+┃ ┃ ┃ ┗ 📜matchers.js
+┃ ┃ ┣ 📂server
+┃ ┃ ┃ ┗ 📜internal.js
+┃ ┃ ┣ 📜root.js
+┃ ┃ ┗ 📜root.svelte
+┃ ┣ 📂types
+┃ ┃ ┣ 📂src
+┃ ┃ ┃ ┗ 📂routes
+┃ ┃ ┃   ┣ 📂cart
+┃ ┃ ┃   ┃ ┗ 📜$types.d.ts
+┃ ┃ ┃   ┣ 📂login
+┃ ┃ ┃   ┃ ┗ 📜$types.d.ts
+┃ ┃ ┃   ┣ 📂orders
+┃ ┃ ┃   ┃ ┗ 📜$types.d.ts
+┃ ┃ ┃   ┣ 📂products
+┃ ┃ ┃   ┃ ┗ 📜$types.d.ts
+┃ ┃ ┃   ┣ 📂signup
+┃ ┃ ┃   ┃ ┗ 📜$types.d.ts
+┃ ┃ ┃   ┗ 📜$types.d.ts
+┃ ┃ ┗ 📜route_meta_data.json
+┃ ┣ 📜ambient.d.ts
+┃ ┣ 📜non-ambient.d.ts
+┃ ┗ 📜tsconfig.json
+┣ 📂src
+┃ ┣ 📂lib
+┃ ┃ ┣ 📂assets
+┃ ┃ ┃ ┗ 📜favicon.svg
+┃ ┃ ┣ 📂components
+┃ ┃ ┃ ┗ 📂ui
+┃ ┃ ┃   ┗ 📂navigation-menu
+┃ ┃ ┃     ┣ 📜index.ts
+┃ ┃ ┃     ┣ 📜navigation-menu-content.svelte
+┃ ┃ ┃     ┣ 📜navigation-menu-indicator.svelte
+┃ ┃ ┃     ┣ 📜navigation-menu-item.svelte
+┃ ┃ ┃     ┣ 📜navigation-menu-link.svelte
+┃ ┃ ┃     ┣ 📜navigation-menu-list.svelte
+┃ ┃ ┃     ┣ 📜navigation-menu-trigger.svelte
+┃ ┃ ┃     ┣ 📜navigation-menu-viewport.svelte
+┃ ┃ ┃     ┗ 📜navigation-menu.svelte
+┃ ┃ ┣ 📂hooks
+┃ ┃ ┣ 📜index.js
+┃ ┃ ┗ 📜utils.js
+┃ ┣ 📂routes
+┃ ┃ ┣ 📂cart
+┃ ┃ ┃ ┗ 📜+page.svelte
+┃ ┃ ┣ 📂login
+┃ ┃ ┃ ┗ 📜+page.svelte
+┃ ┃ ┣ 📂orders
+┃ ┃ ┃ ┗ 📜+page.svelte
+┃ ┃ ┣ 📂products
+┃ ┃ ┃ ┗ 📜+page.svelte
+┃ ┃ ┣ 📂signup
+┃ ┃ ┃ ┗ 📜+page.svelte
+┃ ┃ ┣ 📜+layout.svelte
+┃ ┃ ┗ 📜+page.svelte
+┃ ┣ 📜app.css
+┃ ┣ 📜app.d.ts
+┃ ┗ 📜app.html
+┣ 📂static
+┃ ┗ 📜robots.txt
+┣ 📜.env
+┣ 📜.gitignore
+┣ 📜.npmrc
+┣ 📜components.json
+┣ 📜jsconfig.json
+┣ 📜package.json
+┣ 📜postcss.config.cjs
+┣ 📜README.md
+┣ 📜svelte.config.js
+┣ 📜tailwind.config.js
+┗ 📜vite.config.js
 
